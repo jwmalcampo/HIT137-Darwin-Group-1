@@ -1,1 +1,75 @@
+import string
 
+def shift_char(c, shift, direction='forward'):
+    if c.islower():
+        base = ord('a')
+    elif c.isupper():
+        base = ord('A')
+    else:
+        return c 
+
+    offset = ord(c) - base
+    if direction == 'forward':
+        new_char = chr(base + (offset + shift) % 26)
+    else:
+        new_char = chr(base + (offset - shift) % 26)
+    return new_char
+
+def encrypt(text, n, m):
+    result = ''
+    for c in text:
+        if c.islower():
+            if ord(c) <= ord('m'):  
+                result += shift_char(c, n * m, 'forward')
+            else:
+                result += shift_char(c, n + m, 'backward')
+        elif c.isupper():
+            if ord(c) <= ord('M'):
+                result += shift_char(c, n, 'backward')
+            else:
+                result += shift_char(c, m ** 2, 'forward')
+        else:
+            result += c
+    return result
+
+def decrypt(text, n, m):
+    result = ''
+    for c in text:
+        if c.islower():
+            if ord(c) <= ord('m'): 
+                result += shift_char(c, n * m, 'backward')
+            else:
+                result += shift_char(c, n + m, 'forward')
+        elif c.isupper():
+            if ord(c) <= ord('M'):
+                result += shift_char(c, n, 'forward')
+            else:
+                result += shift_char(c, m ** 2, 'backward')
+        else:
+            result += c
+    return result
+
+def check_correctness(original, decrypted):
+    return original == decrypted
+
+def main():
+    n = int(input("Enter value for n: "))
+    m = int(input("Enter value for m: "))
+
+    with open('raw_text.txt', 'r') as f:
+        raw_text = f.read()
+
+    encrypted_text = encrypt(raw_text, n, m)
+
+    with open('encrypted_text.txt', 'w') as f:
+        f.write(encrypted_text)
+
+    decrypted_text = decrypt(encrypted_text, n, m)
+    is_correct = check_correctness(raw_text, decrypted_text)
+    
+    print("Encryption and Decryption was successful?:", is_correct)
+
+    print("\nDecrypted Text:", decrypted_text)
+
+if __name__ == '__main__':
+    main()
