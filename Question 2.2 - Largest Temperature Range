@@ -1,0 +1,42 @@
+import csv
+import os
+
+folder_path = 'c:/Users/jw_ma/Documents/Python Program Files/temperature_data' #Replace with folder path of temperature_data
+
+stntemps = {}
+
+for tempcsv in os.listdir(folder_path):
+    if tempcsv.endswith('.csv'):
+        file_path = os.path.join(folder_path, tempcsv)
+        with open(file_path, 'r') as file:
+            csv_reader = csv.DictReader(file)
+            for line in csv_reader:
+                rowstnname = line['STATION_NAME']
+                rowtemp = [
+                    float(line['January']), float(line['February']), float(line['March']), float(line['April']), 
+                    float(line['May']), float(line['June']), float(line['July']), float(line['August']), 
+                    float(line['September']), float(line['October']), float(line['November']), float(line['December'])
+                ]                                                                                                         
+                mintemp = min(rowtemp)
+                maxtemp = max(rowtemp)
+                
+                if rowstnname not in stntemps:
+                    stntemps[rowstnname] = {'min': mintemp, 'max': maxtemp}
+                else:
+                    if mintemp < stntemps[rowstnname]['min']:
+                        stntemps[rowstnname]['min'] = mintemp
+                    if maxtemp > stntemps[rowstnname]['max']:
+                        stntemps[rowstnname]['max'] = maxtemp
+
+largestrange = 0
+stnlargestrange = None
+
+for station, temps in stntemps.items():
+    temprange = temps['max'] - temps['min']
+    if temprange > largestrange:
+        largestrange = temprange
+        stnlargestrange = station
+
+with open("largest_temp_range_station.txt", 'w') as f:        
+    print("Station with the largest temperature range: ", stnlargestrange, round(largestrange,2),"C", file=f)
+                
