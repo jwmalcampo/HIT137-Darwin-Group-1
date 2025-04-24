@@ -3,13 +3,11 @@ import os
 
 folder_path = 'c:/Users/jw_ma/Documents/Python Program Files/temperature_data' #Replace with folder path of temperature_data
 
-#Four Seasons of Australia as per Official Australian Government Agency - Tourism Australia:
+# Four Seasons of Australia as per Official Australian Government Agency - Tourism Australia:
 # Summer - December, January, February
 # Autumn - March, April, May
 # Winter - June, July, August
 # Spring - September, October, November
-
-# To confirm with Instructor regarding months and seasons
 
 summerlistavg = []
 autumnlistavg = []
@@ -22,19 +20,19 @@ for tempcsv in os.listdir(folder_path):
         with open(file_path, 'r') as file:
             csv_reader = csv.DictReader(file)
             for line in csv_reader:
-                summer = float(line['January']), float(line['February']), float(line['March'])
+                summer = float(line['December']), float(line['January']), float(line['February'])
                 avgsummeryearly = sum(summer)/len(summer)
                 summerlistavg.append(avgsummeryearly)
 
-                autumn = float(line['April']), float(line['May']), float(line['June'])
+                autumn = float(line['March']), float(line['April']), float(line['May'])
                 avgautumnyearly = sum(autumn)/len(autumn)
                 autumnlistavg.append(avgautumnyearly)
 
-                winter = float(line['July']), float(line['August']), float(line['September'])
+                winter = float(line['June']), float(line['July']), float(line['August'])
                 avgwinteryearly = sum(winter)/len(winter)
                 winterlistavg.append(avgwinteryearly)
 
-                spring = float(line['October']), float(line['November']), float(line['December'])
+                spring = float(line['September']), float(line['October']), float(line['November'])
                 avgspringyearly = sum(spring)/len(spring)
                 springlistavg.append(avgspringyearly)
 
@@ -48,3 +46,4 @@ with open("average_temp.txt", 'w') as f:
     print("Average Autumn Temperature from 1986 to 2005: ", round(autumntotalavg,2),'C', file=f)
     print("Average Winter Temperature from 1986 to 2005: ", round(wintertotalavg,2),'C', file=f)
     print("Average Spring Temperature from 1986 to 2005: ", round(springtotalavg,2),'C', file=f)
+          
