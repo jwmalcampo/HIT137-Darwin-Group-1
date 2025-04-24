@@ -1,14 +1,14 @@
-import csv
 import os
+import csv
 
-folder_path = 'c:/Users/jw_ma/Documents/Python Program Files/temperature_data' #Replace with folder path of temperature_data
+folder_path = os.path.join(os.path.dirname(__file__), 'temperature_data') # To use the data folder in the ZIP file
 
 stntemps = {}
 
 for tempcsv in os.listdir(folder_path):
     if tempcsv.endswith('.csv'):
         file_path = os.path.join(folder_path, tempcsv)
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding='utf-8') as file:
             csv_reader = csv.DictReader(file)
             for line in csv_reader:
                 rowstnname = line['STATION_NAME']
@@ -38,5 +38,7 @@ for station, temps in stntemps.items():
         stnlargestrange = station
 
 with open("largest_temp_range_station.txt", 'w') as f:        
-    print("Station with the largest temperature range: ", stnlargestrange, round(largestrange,2),"C", file=f)
+    print("Largest Temperature Range Station: ", stnlargestrange, round(largestrange,2),"C", file=f)
                 
+
+              
