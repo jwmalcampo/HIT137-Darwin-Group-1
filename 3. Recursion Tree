@@ -1,0 +1,46 @@
+import turtle
+
+def tree(size, depth, angle_left, angle_right, shrink_factor):      #Defines funtions named tree and receive 5 inputs from users.
+    if depth > 0:
+        color = get_color(depth, max_depth)                         #Choose color based how deep current branch 
+        t.pencolor(color)
+        thickness = int(depth* 1)                                   #Set thickness of branch based on current depth
+        if thickness < 2:                                           #adjust the thickness of the tree
+                thickness = 2
+        t.width (thickness)                                         #Set linde width for the pen
+
+
+        t.forward(size)                                             #Move forward by size units, draw current branch or trunk segment.
+        t.right(angle_right)                                        #turn turtle to the right by the angle_right, prepare to draw the right branch
+        tree(size * shrink_factor, depth - 1, angle_left, angle_right, shrink_factor)   #Draw right branch of the tree. Size is reduced by multiplying with shrink_factor, the branch then shorter. The depth is reduced by 1.
+        t.left(angle_left + angle_right)                            # Turns left  to another side
+        tree(size * shrink_factor, depth - 1, angle_left, angle_right, shrink_factor)
+        t.right(angle_left)                                         #Place turtle back to original heading
+        t.backward(size)                                            #Move turtle back to starting point
+
+def get_color(depth, max_depth):                                    #identify color's brach based on depth and max depth
+    if depth > max_depth - 1:                                       # Return the color in the lower branch with the requirements
+        return 'brown'
+    else:
+        return 'green'
+
+if __name__ == '__main__':
+    t = turtle.Turtle()
+    t.speed(0)                                                      # Set fastest speed, else we can adujst the speed slower using another number 
+    t.penup()
+    t.goto(0, -200)                                                 # Move turle to the lower screen
+    t.pendown()
+    t.left(90)                                                      # point turtle upward
+
+    angle_left = int(input("Input left branch angle (degrees): "))
+    angle_right = int(input("Input right branch angle (degrees): ")) 
+    initial_branch_size = int(input("Input starting branch length (pixels): ")) # Enter an interger number Ex: 100 if you want to have result in the example
+    recursion_depth = int(input("Input recursion depth: "))
+    shrink_factor = float(input("Input reduction factor (0-1): "))  #Enter a float number Ex: 0.7 (70%) if you want to have the result exactly in the question
+
+    max_depth = recursion_depth                                     #save the value of recursion_depth into a new variable: max_depth
+    tree(initial_branch_size, recursion_depth, angle_left, angle_right, shrink_factor)   # calls a funtion named tree, draws a recursive tree structure.
+    t.hideturtle()                                                  # Hide turtle and display
+    turtle.done()
+
+   
